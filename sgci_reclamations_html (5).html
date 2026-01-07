@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de Réclamation | SGCI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(213, 0, 50, 0.1);
+            padding: 1.2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .logo {
+            height: 60px;
+        }
+        
+        .header-title h1 {
+            color: #D50032;
+            font-weight: 900;
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+        
+        .header-title p {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .header-right {
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .header-status {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border: 2px solid #2196F3;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1565C0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+        }
+        
+        .support-label {
+            font-size: 13px;
+            color: #6c757d;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .phone {
+            font-size: 26px;
+            font-weight: 900;
+            color: #D50032;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+        
+        /* Cards */
+        .card {
+            background: linear-gradient(145deg, #ffffff, #f5f7fa);
+            border-radius: 24px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 20px 20px 60px #d9dce1, -20px -20px 60px #ffffff;
+            border: 1px solid rgba(213, 0, 50, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 25px 25px 80px #d0d3d8, -25px -25px 80px #ffffff;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Search Section */
+        .search-card {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .search-card h2 {
+            color: #212529;
+            font-weight: 800;
+            font-size: 24px;
+            margin-bottom: 1rem;
+        }
+        
+        .search-card p {
+            color: #6c757d;
+            font-size: 15px;
+            margin-bottom: 2rem;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+        
+        .search-input {
+            flex: 3;
+            padding: 16px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #D50032;
+            box-shadow: 0 0 0 4px rgba(213, 0, 50, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #D50032 0%, #B0002A 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(213, 0, 50, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(213, 0, 50, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #D50032;
+            border: 2px solid #D50032;
+        }
+        
+        .btn-secondary:hover {
+            background: #D50032;
+            color: white;
+        }
+        
+        /* Status Banner */
+        .status-banner {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-left: 5px solid #2196F3;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 24px rgba(33, 150, 243, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .status-banner h3 {
+            color: #1565C0;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+        
+        .status-badge {
+            background: #2196F3;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+        
+        /* Claim Header */
+        .claim-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .claim-info h2 {
+            color: #212529;
+            font-weight: 800;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        
+        .claim-dates {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        
+        .date-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .date-label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .date-value {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .badge {
+            padding: 10px 24px;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-success {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0.25));
+            color: #28a745;
+            border: 2px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        .badge-primary {
+            background: linear-gradient(135deg, rgba(213, 0, 50, 0.15), rgba(213, 0, 50, 0.25));
+            color: #D50032;
+            border: 2px solid rgba(213, 0, 50, 0.3);
+        }
+        
+        .badge-info {
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.15), rgba(33, 150, 243, 0.25));
+            color: #2196F3;
+            border: 2px solid rgba(33, 150, 243, 0.3);
+        }
+        
+        /* Info Grid */
+        .info-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin: 2rem 0;
+        }
+        
+        .info-section h3 {
+            color: #212529;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-grid {
+            background: rgba(248, 249, 250, 0.7);
+            padding: 2rem;
+            border-radius: 20px;
+        }
+        
+        .info-row {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 15px;
+        }
+        
+        .info-value {
+            color: #212529;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        
+        /* Caractère Box */
+        .caractere-box {
+            background: rgba(40, 167, 69, 0.08);
+            border-left: 4px solid #28a745;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .caractere-box.non-fondee {
+            background: rgba(213, 0, 50, 0.08);
+            border-left-color: #D50032;
+        }
+        
+        .caractere-content strong {
+            color: #28a745;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .caractere-box.non-fondee .caractere-content strong {
+            color: #D50032;
+        }
+        
+        .caractere-content div {
+            color: #495057;
+        }
+        
+        .caractere-note {
+            font-size: 14px;
+            color: #D50032;
+            margin-top: 8px;
+            display: block;
+        }
+        
+        /* Timeline */
+        .timeline-wrapper {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+        
+        .timeline-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 3rem;
+        }
+        
+        .timeline-container {
+            position: relative;
+            padding: 40px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            top: 20px;
+            left: 60px;
+            right: 60px;
+            height: 4px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+        
+        .timeline-progress {
+            position: absolute;
+            top: 20px;
+            left: 60px;
+            height: 4px;
+            background: #28a745;
+            z-index: 2;
+            transition: width 1s ease-in-out;
+        }
+        
+        .timeline-step {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            flex: 1;
+            max-width: 140px;
+        }
+        
+        .timeline-point {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 4px solid #e9ecef;
+            margin: 0 auto 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            transition: all 0.4s ease;
+        }
+        
+        .timeline-point.completed {
+            background: #28a745;
+            border-color: #28a745;
+            box-shadow: 0 0 0 8px rgba(40, 167, 69, 0.15);
+            color: white;
+        }
+        
+        .timeline-point.completed::after {
+            content: '✓';
+            font-size: 24px;
+        }
+        
+        .timeline-point.active {
+            background: #2196F3;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 8px rgba(33, 150, 243, 0.2);
+            animation: pulse 2s infinite;
+            color: white;
+        }
+        
+        .timeline-point.active::after {
+            content: '●';
+            font-size: 16px;
+        }
+        
+        .timeline-point.pending {
+            background: #ffffff;
+            border-color: #e9ecef;
+            color: #e9ecef;
+        }
+        
+        .timeline-point.pending::after {
+            content: '○';
+            font-size: 20px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 8px rgba(33, 150, 243, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(33, 150, 243, 0.1);
+            }
+        }
+        
+        .timeline-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+        
+        .timeline-label.active {
+            color: #2196F3;
+            font-weight: 700;
+        }
+        
+        .timeline-label.completed {
+            color: #28a745;
+        }
+        
+        /* Star Rating */
+        .star-container {
+            text-align: center;
+            padding: 2.5rem;
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+        
+        .star-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 2rem;
+        }
+        
+        .stars-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 2rem 0;
+        }
+        
+        .star {
+            font-size: 56px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            color: #e4e5e9;
+        }
+        
+        .star:hover {
+            transform: scale(1.25) rotate(-5deg);
+        }
+        
+        .star.filled {
+            color: #ffc107;
+            animation: starBounce 0.3s ease;
+        }
+        
+        @keyframes starBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3) rotate(10deg); }
+        }
+        
+        .rating-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #495057;
+            margin-top: 1.5rem;
+        }
+        
+        .rating-text span {
+            color: #ffc107;
+        }
+        
+        .comment-box {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            font-size: 15px;
+            margin: 2rem 0;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .comment-box:focus {
+            outline: none;
+            border-color: #D50032;
+            box-shadow: 0 0 0 4px rgba(213, 0, 50, 0.1);
+        }
+        
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.05));
+            border-left: 4px solid #28a745;
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .success-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .success-icon {
+            font-size: 32px;
+        }
+        
+        .success-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #28a745;
+        }
+        
+        .success-subtitle {
+            font-size: 15px;
+            color: #6c757d;
+        }
+        
+        .success-rating {
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        .success-stars {
+            font-size: 48px;
+            color: #ffc107;
+            letter-spacing: 8px;
+        }
+        
+        .success-rating-text {
+            font-size: 20px;
+            color: #495057;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        
+        /* Contact Card */
+        .contact-card {
+            background: linear-gradient(135deg, #D50032 0%, #B0002A 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            color: white;
+            text-align: center;
+            margin: 3rem 0;
+            box-shadow: 0 25px 60px rgba(213, 0, 50, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .contact-card h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-card p {
+            font-size: 16px;
+            margin-bottom: 24px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-phone {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-hours {
+            font-size: 14px;
+            margin-top: 20px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Resources */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 2rem;
+        }
+        
+        .resource-card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resource-card h4 {
+            color: #212529;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        
+        .resource-card p {
+            color: #6c757d;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .resource-link {
+            color: #D50032;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s ease;
+        }
+        
+        .resource-link:hover {
+            gap: 12px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 3rem 0;
+            color: #6c757d;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .footer p {
+            margin: 0;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            margin-top: 16px;
+            font-size: 13px;
+        }
+        
+        .footer-links a {
+            color: #6c757d;
+            text-decoration: none;
+            margin: 0 12px;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: #D50032;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-left {
+                flex-direction: column;
+            }
+            
+            .header-right {
+                flex-direction: column;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .timeline-container {
+                flex-wrap: wrap;
+                gap: 40px;
+            }
+            
+            .timeline-step {
+                max-width: 100px;
+            }
+            
+            .info-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .info-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="https://particuliers.societegenerale.ci/fileadmin/user_upload/logos/SGBCI103_2025.svg" alt="SGCI Logo" class="logo">
+                    <div class="header-title">
+                        <h1>Suivi de Réclamation</h1>
+                        <p>Service Client - Suivi en temps réel</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-status hidden" id="headerStatus">En cours</div>
+                    <div style="text-align: right;">
+                        <div class="support-label">Support Client</div>
+                        <div class="phone">27 20 20 10 10</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Search Card -->
+        <div class="card search-card" id="searchCard">
+            <h2>🔍 Recherche de réclamation</h2>
+            <p>Entrez votre numéro de référence pour suivre votre dossier</p>
+            
+            <div class="search-form">
+                <input type="text" class="search-input" id="searchInput" placeholder="Exemple : SGCI 3325G, SGCI-338245">
+                <button class="btn btn-primary" onclick="searchClaim()">🔎 Rechercher</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <!-- Reset Button -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <button class="btn btn-secondary" onclick="resetSearch()" style="max-width: 300px;">
+                    🔄 Nouvelle recherche
+                </button>
+            </div>
+            
+            <!-- Status Banner -->
+            <div class="status-banner">
+                <h3>📊 Statut actuel :</h3>
+                <span class="status-badge" id="statusBadge">En cours</span>
+            </div>
+
+            <!-- Claim Details Card -->
+            <div class="card">
+                <div class="claim-header">
+                    <div class="claim-info">
+                        <h2 id="claimTitle">📋 Réclamation</h2>
+                        <div class="claim-dates">
+                            <div class="date-item">
+                                <span class="date-label">📅 Créée le</span>
+                                <span class="date-value" id="dateCreated">--</span>
+                            </div>
+                            <div class="date-item">
+                                <span class="date-label">🔄 Dernière mise à jour</span>
+                                <span class="date-value" id="dateUpdated">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="badge badge-info" id="stateBadge">En cours</div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="info-section">
+                    <div>
+                        <h3>📄 Informations générales</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <div class="info-label">Type de réclamation</div>
+                                <div class="info-value" id="typeRec">--</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Agence concernée</div>
+                                <div class="info-value" id="agence">--</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Activité</div>
+                                <div class="info-value" id="activite">--</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Motif</div>
+                                <div class="info-value" id="motif">--</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>📊 Détails spécifiques</h3>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <div class="info-label">Objet principal</div>
+                                <div class="info-value" id="objet">--</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Montant concerné</div>
+                                <div class="info-value" id="montant">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caractère Box -->
+                <div class="caractere-box" id="caractereBox">
+                    <div class="caractere-content">
+                        <strong>Caractère de la réclamation</strong>
+                        <div id="caractereText">--</div>
+                        <span class="caractere-note hidden" id="caractereNote">Contactez votre gestionnaire de compte pour tout justificatif</span>
+                    </div>
+                    <div class="badge badge-success" id="caractereBadge">--</div>
+                </div>
+            </div>
+
+            <!-- Timeline Card -->
+            <div class="card">
+                <h2 style="color: #212529; margin-bottom: 2.5rem; font-weight: 800; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 28px;">🔄</span> Suivi du traitement
+                </h2>
+                
+                <div class="timeline-wrapper">
+                    <div class="timeline-title">Progression du traitement</div>
+                    <div class="timeline-container" id="timelineContainer">
+                        <!-- Timeline steps will be generated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating Card -->
+            <div class="card hidden" id="ratingCard">
+                <h2 style="color: #212529; margin-bottom: 1.5rem; font-weight: 800; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 28px;">⭐</span> Évaluation du service
+                </h2>
+                
+                <div id="ratingForm">
+                    <div class="star-container">
+                        <div class="star-title">Comment évaluez-vous le traitement de votre réclamation ?</div>
+                        <div class="stars-wrapper" id="starsWrapper">
+                            <span class="star" data-rating="1" onclick="setRating(1)">★</span>
+                            <span class="star" data-rating="2" onclick="setRating(2)">★</span>
+                            <span class="star" data-rating="3" onclick="setRating(3)">★</span>
+                            <span class="star" data-rating="4" onclick="setRating(4)">★</span>
+                            <span class="star" data-rating="5" onclick="setRating(5)">★</span>
+                        </div>
+                        <div class="rating-text hidden" id="ratingText">
+                            <span id="starsDisplay"></span> <span id="ratingValue">0</span>/5 étoiles
+                        </div>
+                    </div>
+                    
+                    <textarea class="comment-box" id="commentBox" placeholder="💬 Partagez votre expérience, vos remarques ou suggestions..."></textarea>
+                    
+                    <button class="btn btn-primary" onclick="submitFeedback()" style="max-width: 400px; margin: 0 auto; display: block;">
+                        📤 Soumettre mon évaluation
+                    </button>
+                </div>
+                
+                <div id="ratingSuccess" class="hidden">
+                    <div class="success-message">
+                        <div class="success-header">
+                            <div class="success-icon">✅</div>
+                            <div>
+                                <div class="success-title">Merci pour votre évaluation !</div>
+                                <div class="success-subtitle">Votre feedback nous aide à améliorer nos services</div>
+                            </div>
+                        </div>
+                        <div class="success-rating">
+                            <div class="success-stars" id="successStars">★★★★★</div>
+                            <div class="success-rating-text" id="successRatingText">5/5 étoiles</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Card -->
+            <div class="card">
+                <h2 style="color: #212529; margin-bottom: 2rem; font-weight: 800; font-size: 24px; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 28px;">📚</span> Ressources utiles
+                </h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h4>📋 Parcours client réclamation</h4>
+                        <p>Consultez le guide complet du parcours de traitement des réclamations.</p>
+                        <a href="https://particuliers.societegenerale.ci/fileadmin/user_upload/cote_ivoire/PDF/Parcours_clients_reclamation.pdf" target="_blank" class="resource-link">
+                            Télécharger le guide <span>→</span>
+                        </a>
+                    </div>
+                    <div class="resource-card">
+                        <h4>📋 Centre d'aide</h4>
+                        <p>Consultez notre FAQ et guides pratiques pour toutes vos questions.</p>
+                        <a href="https://particuliers.societegenerale.ci/fr/faq/" target="_blank" class="resource-link">
+                            Consulter la FAQ <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Card -->
+            <div class="contact-card">
+                <h3>📞 Besoin d'assistance ?</h3>
+                <p>Notre équipe de conseillers dédiés est à votre écoute pour vous accompagner</p>
+                <div class="contact-phone">27 20 20 10 10</div>
+                <div class="contact-hours">
+                    📅 Service disponible 24h/24 et 7j/7
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2026 Société Générale Côte d'Ivoire. Tous droits réservés.</p>
+            <div class="footer-links">
+                <a href="https://particuliers.societegenerale.ci/fr/mentions-legales/">Mentions légales</a> •
+                <a href="https://particuliers.societegenerale.ci/fr/confidentialite/">Confidentialité</a> •
+                <a href="https://particuliers.societegenerale.ci/fr/contact/">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====================================================================
+        // BASE DE DONNÉES LOCALE
+        // Cette structure peut facilement être remplacée par une API REST 
+        // ou une connexion à un fichier Excel via une API backend
+        // ====================================================================
+        
+        /**
+         * Structure de données pour chaque réclamation :
+         * - ref: Référence unique de la réclamation
+         * - dateCreated: Date de création (format DD/MM/YYYY à HH:MM)
+         * - dateUpdated: Date de dernière modification
+         * - state: Statut actuel de la réclamation
+         * - type: Type de réclamation (Monetique, Virement, etc.)
+         * - agence: Code et nom de l'agence
+         * - activite: Type d'activité concernée
+         * - motif: Motif de la réclamation
+         * - objet: Objet détaillé
+         * - caractere: "Fondée" ou "Non fondée"
+         * - montant: Montant avec devise
+         * - currentStep: Index de l'étape actuelle dans le workflow (0-7)
+         */
+        const claimsDatabase = {
+            'SGCI 3325G': {
+                ref: 'SGCI 3325G',
+                dateCreated: '15/01/2026 à 10:30',
+                dateUpdated: '20/01/2026 à 14:15',
+                state: 'En cours de régularisation',
+                type: 'Monetique',
+                agence: '00111 PLATEAU',
+                activite: 'Hôtel 648 56',
+                motif: 'RETRAIT CONTESTE-NON RECONNU',
+                objet: 'Hôtel 1080 central',
+                caractere: 'Fondée',
+                montant: '10 000 XOF',
+                currentStep: 5
+            },
+            'SGCI-338245': {
+                ref: 'SGCI-338245',
+                dateCreated: '18/12/2025 à 13:16',
+                dateUpdated: '19/12/2025 à 11:00',
+                state: 'A terminer',
+                type: 'Monetique',
+                agence: '00111-PLATEAU',
+                activite: 'Retrait GAB SG',
+                motif: 'RETRAIT CONTESTE-NON RECONNU',
+                objet: 'Retrait DAB contesté',
+                caractere: 'Non fondée',
+                montant: '100 000 XOF',
+                currentStep: 6
+            }
+        };
+
+        // Workflow des statuts dans l'ordre chronologique
+        const WORKFLOW_STEPS = [
+            'Etude technique',
+            'Initialisation',
+            'Traitement',
+            'Traitée',
+            'Valider Regularisation',
+            'En cours de régularisation',
+            'A terminer',
+            'Résolue'
+        ];
+
+        // États de session
+        let currentRating = 0;
+        let hasSubmittedFeedback = false;
+
+        // ====================================================================
+        // FONCTION DE RECHERCHE DE RÉCLAMATION
+        // Pour connexion API : remplacer claimsDatabase par un appel fetch()
+        // ====================================================================
+        
+        /**
+         * Recherche une réclamation dans la base de données
+         * 
+         * Pour connexion à une API REST :
+         * 
+         * async function searchClaim() {
+         *     const input = document.getElementById('searchInput').value.trim();
+         *     try {
+         *         const response = await fetch(`/api/claims/${input}`);
+         *         const claim = await response.json();
+         *         displayClaim(claim);
+         *     } catch (error) {
+         *         alert('❌ Réclamation introuvable');
+         *     }
+         * }
+         * 
+         * Pour Excel (via backend) :
+         * 
+         * async function searchClaim() {
+         *     const input = document.getElementById('searchInput').value.trim();
+         *     const formData = new FormData();
+         *     formData.append('reference', input);
+         *     
+         *     try {
+         *         const response = await fetch('/api/excel/search', {
+         *             method: 'POST',
+         *             body: formData
+         *         });
+         *         const claim = await response.json();
+         *         displayClaim(claim);
+         *     } catch (error) {
+         *         alert('❌ Réclamation introuvable');
+         *     }
+         * }
+         */
+        function searchClaim() {
+            const input = document.getElementById('searchInput').value.trim().toUpperCase();
+            
+            if (!input) {
+                alert('Veuillez entrer une référence de réclamation');
+                return;
+            }
+
+            // Recherche avec variations possibles de format
+            const claim = claimsDatabase[input] || 
+                         claimsDatabase[input.replace('-', ' ')] || 
+                         claimsDatabase[input.replace(' ', '-')];
+            
+            if (!claim) {
+                alert('❌ Réclamation introuvable - Veuillez vérifier le numéro de référence');
+                return;
+            }
+
+            displayClaim(claim);
+        }
+
+        // ====================================================================
+        // AFFICHAGE DES DÉTAILS DE LA RÉCLAMATION
+        // ====================================================================
+        
+        function displayClaim(claim) {
+            // Masquer la recherche, afficher les résultats
+            document.getElementById('searchCard').style.display = 'none';
+            document.getElementById('resultsSection').classList.remove('hidden');
+
+            // Mettre à jour le statut dans le header
+            const headerStatus = document.getElementById('headerStatus');
+            headerStatus.textContent = claim.state;
+            headerStatus.classList.remove('hidden');
+
+            // Mettre à jour le banner de statut
+            document.getElementById('statusBadge').textContent = claim.state;
+
+            // Mettre à jour les détails de la réclamation
+            document.getElementById('claimTitle').textContent = `📋 Réclamation ${claim.ref}`;
+            document.getElementById('dateCreated').textContent = claim.dateCreated;
+            document.getElementById('dateUpdated').textContent = claim.dateUpdated;
+            document.getElementById('stateBadge').textContent = claim.state;
+            document.getElementById('typeRec').textContent = claim.type;
+            document.getElementById('agence').textContent = claim.agence;
+            document.getElementById('activite').textContent = claim.activite;
+            document.getElementById('motif').textContent = claim.motif;
+            document.getElementById('objet').textContent = claim.objet;
+            document.getElementById('montant').textContent = claim.montant;
+
+            // Définir la couleur du badge selon le statut
+            const stateBadge = document.getElementById('stateBadge');
+            if (claim.state === 'Résolue') {
+                stateBadge.className = 'badge badge-success';
+            } else if (claim.state === 'A terminer' || claim.state === 'Traitée') {
+                stateBadge.className = 'badge badge-info';
+            } else {
+                stateBadge.className = 'badge badge-primary';
+            }
+
+            // Mettre à jour le caractère de la réclamation
+            updateCaractere(claim);
+
+            // Afficher la carte d'évaluation pour les réclamations terminées
+            const showRating = ['A terminer', 'Résolue', 'Traitée'].includes(claim.state);
+            document.getElementById('ratingCard').classList.toggle('hidden', !showRating);
+
+            // Mettre à jour la timeline
+            updateTimeline(claim.currentStep);
+
+            // Scroll vers les résultats
+            setTimeout(() => {
+                document.getElementById('resultsSection').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        }
+
+        // ====================================================================
+        // MISE À JOUR DU CARACTÈRE DE LA RÉCLAMATION
+        // ====================================================================
+        
+        function updateCaractere(claim) {
+            const caractereBox = document.getElementById('caractereBox');
+            const caractereText = document.getElementById('caractereText');
+            const caractereBadge = document.getElementById('caractereBadge');
+            const caractereNote = document.getElementById('caractereNote');
+
+            caractereText.textContent = claim.caractere;
+            caractereBadge.textContent = claim.caractere;
+
+            if (claim.caractere.toLowerCase().includes('non fondée')) {
+                caractereBox.classList.add('non-fondee');
+                caractereBadge.className = 'badge badge-primary';
+                caractereNote.classList.remove('hidden');
+            } else {
+                caractereBox.classList.remove('non-fondee');
+                caractereBadge.className = 'badge badge-success';
+                caractereNote.classList.add('hidden');
+            }
+        }
+
+        // ====================================================================
+        // MISE À JOUR DYNAMIQUE DE LA TIMELINE
+        // ====================================================================
+        
+        function updateTimeline(currentStep) {
+            const timelineContainer = document.getElementById('timelineContainer');
+            
+            // Calcul du pourcentage de progression
+            const progressWidth = ((currentStep + 1) / WORKFLOW_STEPS.length) * 100;
+            
+            // Générer le HTML de la timeline
+            let timelineHTML = `
+                <div class="timeline-line"></div>
+                <div class="timeline-progress" style="width: calc(${progressWidth}% - 60px);"></div>
+            `;
+            
+            // Générer chaque étape
+            WORKFLOW_STEPS.forEach((step, index) => {
+                let pointClass = 'pending';
+                let labelClass = '';
+                
+                if (index < currentStep) {
+                    pointClass = 'completed';
+                    labelClass = 'completed';
+                } else if (index === currentStep) {
+                    pointClass = 'active';
+                    labelClass = 'active';
+                }
+                
+                timelineHTML += `
+                    <div class="timeline-step">
+                        <div class="timeline-point ${pointClass}"></div>
+                        <div class="timeline-label ${labelClass}">${step}</div>
+                    </div>
+                `;
+            });
+            
+            timelineContainer.innerHTML = timelineHTML;
+        }
+
+        // ====================================================================
+        // SYSTÈME D'ÉVALUATION PAR ÉTOILES
+        // ====================================================================
+        
+        function setRating(rating) {
+            if (hasSubmittedFeedback) return;
+            
+            currentRating = rating;
+            updateStars();
+        }
+
+        function updateStars() {
+            const stars = document.querySelectorAll('.star');
+            const ratingText = document.getElementById('ratingText');
+            const ratingValue = document.getElementById('ratingValue');
+            const starsDisplay = document.getElementById('starsDisplay');
+
+            stars.forEach((star, index) => {
+                if (index < currentRating) {
+                    star.classList.add('filled');
+                } else {
+                    star.classList.remove('filled');
+                }
+            });
+
+            if (currentRating > 0) {
+                ratingText.classList.remove('hidden');
+                ratingValue.textContent = currentRating;
+                starsDisplay.textContent = '★'.repeat(currentRating) + '☆'.repeat(5 - currentRating);
+            } else {
+                ratingText.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Soumission du feedback
+         * 
+         * Pour enregistrer dans une base de données :
+         * 
+         * async function submitFeedback() {
+         *     if (currentRating === 0) {
+         *         alert('⚠️ Veuillez sélectionner une note');
+         *         return;
+         *     }
+         * 
+         *     const feedback = {
+         *         reference: getCurrentReference(),
+         *         rating: currentRating,
+         *         comment: document.getElementById('commentBox').value,
+         *         timestamp: new Date().toISOString()
+         *     };
+         * 
+         *     try {
+         *         await fetch('/api/feedback', {
+         *             method: 'POST',
+         *             headers: { 'Content-Type': 'application/json' },
+         *             body: JSON.stringify(feedback)
+         *         });
+         *         showSuccessMessage();
+         *     } catch (error) {
+         *         alert('Erreur lors de l'enregistrement');
+         *     }
+         * }
+         */
+        function submitFeedback() {
+            if (currentRating === 0) {
+                alert('⚠️ Veuillez sélectionner une note avant de soumettre');
+                return;
+            }
+
+            hasSubmittedFeedback = true;
+
+            // Mettre à jour le message de succès
+            const successStars = '★'.repeat(currentRating) + '☆'.repeat(5 - currentRating);
+            document.getElementById('successStars').textContent = successStars;
+            document.getElementById('successRatingText').textContent = `${currentRating}/5 étoiles`;
+
+            // Afficher le succès, masquer le formulaire
+            document.getElementById('ratingForm').classList.add('hidden');
+            document.getElementById('ratingSuccess').classList.remove('hidden');
+
+            // Notification
+            setTimeout(() => {
+                alert('✅ Merci pour votre feedback ! Votre évaluation a été enregistrée.');
+            }, 300);
+        }
+
+        // ====================================================================
+        // RÉINITIALISATION DE LA RECHERCHE
+        // ====================================================================
+        
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchCard').style.display = 'block';
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('headerStatus').classList.add('hidden');
+            
+            // Réinitialiser l'évaluation
+            currentRating = 0;
+            hasSubmittedFeedback = false;
+            updateStars();
+            document.getElementById('ratingForm').classList.remove('hidden');
+            document.getElementById('ratingSuccess').classList.add('hidden');
+            document.getElementById('commentBox').value = '';
+            
+            // Scroll vers le haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ====================================================================
+        // INITIALISATION AU CHARGEMENT DE LA PAGE
+        // ====================================================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const stars = document.querySelectorAll('.star');
+            
+            // Effet hover sur les étoiles
+            stars.forEach((star, index) => {
+                star.addEventListener('mouseenter', () => {
+                    if (!hasSubmittedFeedback) {
+                        stars.forEach((s, i) => {
+                            if (i <= index) {
+                                s.style.color = '#ffc107';
+                            } else {
+                                s.style.color = '#e4e5e9';
+                            }
+                        });
+                    }
+                });
+
+                star.addEventListener('mouseleave', () => {
+                    updateStars();
+                });
+            });
+
+            // Recherche avec la touche Entrée
+            document.getElementById('searchInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchClaim();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
